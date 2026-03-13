@@ -148,6 +148,14 @@ nav {
   max-width: 400px;
 }
 .hero-ctas { display: flex; gap: 0.75rem; }
+  
+.hero-intro{
+  margin-top:1.8rem;
+  font-size:0.95rem;
+  color:var(--dim);
+  max-width:420px;
+  line-height:1.7;
+}
 
 /* right column */
 .hero-right-label {
@@ -192,8 +200,11 @@ nav {
 .btn-ghost:hover { border-color: rgba(237,232,224,0.35); color: var(--text); transform: translateY(-1px); }
 
 /* ── MAIN CONTENT ── */
-.main { max-width: 1280px; margin: 0 auto; border-right: 1px solid var(--line); }
+.main { max-width: 1280px; margin: 6rem auto; border-right: 1px solid var(--line); }
 
+.main + .main{
+  margin-top:6rem;
+}
 /* ── SECTION HEADER ── */
 .sec-bar {
   display: flex; align-items: center; justify-content: space-between;
@@ -402,8 +413,12 @@ footer {
     <div>
       <div class="hero-kicker hero-instant"><span class="kicker-line"></span>Computer Science Engineer · VIT Vellore · 2026</div>
       <h1 class="hero-name hero-instant d1">
-        <span class="line-dim">Preeti Ambwani.</span>
+        Preeti Ambwani
+        <span class="line-dim">Software Engineer . ML Systems . Data Analyst</span>
       </h1>
+      <p class="hero-intro hero-instant d2>
+        Building scalable backend systems, secure APIs, and machine learning solutions that solve real-world problems.
+        </p>
     </div>
     <div class="hero-bottom hero-instant d2">
       <p class="hero-tagline">Building systems that scale,<br>secured by design.</p>
