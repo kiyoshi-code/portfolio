@@ -36,7 +36,7 @@ body {
   cursor: none;
 }
 
-/* ── CUSTOM CURSOR ── */
+/* ── CUSTOM CURSOR (desktop only) ── */
 #cursor {
   position: fixed; width: 8px; height: 8px;
   background: var(--accent); border-radius: 50%;
@@ -51,15 +51,13 @@ body {
   transform: translate(-50%, -50%);
   transition: transform 0.18s cubic-bezier(.22,1,.36,1), width 0.25s, height 0.25s, opacity 0.2s;
 }
-body:hover #cursor-ring { opacity: 1; }
-a:hover ~ #cursor, button:hover ~ #cursor { transform: translate(-50%,-50%) scale(2.5); }
 
 /* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  height: 60px; padding: 0 2.5rem;
+  height: 56px; padding: 0 2.5rem;
   display: flex; align-items: center; justify-content: space-between;
-  background: rgba(28,25,22,0.9);
+  background: rgba(28,25,22,0.95);
   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--line);
 }
@@ -72,6 +70,7 @@ nav {
   font-size: 0.72rem; font-weight: 400; color: var(--dim);
   text-decoration: none; padding: 0.4rem 1rem; letter-spacing: 0.04em;
   transition: color 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 .nav-center a:hover { color: var(--text); }
 .nav-otw {
@@ -79,13 +78,49 @@ nav {
   font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--accent);
 }
+.nav-otw-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #6ee7b7;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-@keyframes otw { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(110,231,183,0)} 50%{opacity:0.5;box-shadow:0 0 0 4px rgba(110,231,183,0.15)} }
+/* Mobile nav hamburger */
+.nav-mobile-menu {
+  display: none;
+  flex-direction: column; gap: 4px;
+  cursor: pointer; padding: 8px;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-mobile-menu span {
+  display: block; width: 20px; height: 1.5px;
+  background: var(--dim); transition: all 0.3s;
+}
+
+/* Mobile nav drawer */
+.mobile-drawer {
+  display: none;
+  position: fixed; top: 56px; left: 0; right: 0; z-index: 199;
+  background: rgba(28,25,22,0.98);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+  flex-direction: column;
+  transform: translateY(-100%);
+  transition: transform 0.3s cubic-bezier(.22,1,.36,1);
+}
+.mobile-drawer.open { transform: translateY(0); }
+.mobile-drawer a {
+  font-size: 0.9rem; color: var(--dim); text-decoration: none;
+  padding: 1rem 1.5rem; border-bottom: 1px solid var(--line);
+  letter-spacing: 0.04em;
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-drawer a:last-child { border-bottom: none; }
 
 /* ── HERO ── */
 .hero {
-  min-height: 100vh;
-  padding: 60px 0 0;
+  min-height: 100dvh;
+  padding: 56px 0 0;
   display: grid;
   grid-template-columns: 1fr 340px;
   grid-template-rows: 1fr auto;
@@ -113,19 +148,16 @@ nav {
   text-transform: uppercase; color: var(--dim2);
   margin-bottom: 2.5rem;
 }
-.kicker-line { width: 24px; height: 1px; background: var(--accent); opacity: 0.6; }
+.kicker-line { width: 24px; height: 1px; background: var(--accent); opacity: 0.6; flex-shrink: 0; }
 
 .hero-name {
   font-family: 'Cabinet Grotesk', sans-serif;
-  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
   font-weight: 800;
   line-height: 0.93;
   letter-spacing: -0.04em;
   color: var(--text);
   margin-bottom: auto;
-  font-weight: 800; 
-  letter-spacing: -0.04em; 
-  line-height: 0.95;
 }
 .hero-name .line-dim {
   display: block;
@@ -138,23 +170,21 @@ nav {
   margin-top: 0.4em;
 }
 
-.hero-bottom {
-  margin-top: 2.5rem;
-}
+.hero-bottom { margin-top: 2.5rem; }
 .hero-tagline {
   font-family: 'Newsreader', serif;
   font-size: 1.2rem; font-style: italic; font-weight: 300;
   color: var(--dim); line-height: 1.5; margin-bottom: 2rem;
   max-width: 400px;
 }
-.hero-ctas { display: flex; gap: 0.75rem; }
-  
-.hero-intro{
-  margin-top:1.8rem;
-  font-size:0.95rem;
-  color:var(--dim);
-  max-width:420px;
-  line-height:1.7;
+.hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+.hero-intro {
+  margin-top: 1.8rem;
+  font-size: 0.95rem;
+  color: var(--dim);
+  max-width: 420px;
+  line-height: 1.7;
 }
 
 /* right column */
@@ -186,13 +216,29 @@ nav {
 .hero-bar-item { font-size: 0.68rem; color: var(--dim2); letter-spacing: 0.06em; display: flex; align-items: center; gap: 0.5rem; }
 .hero-bar-item::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); opacity: 0.6; flex-shrink: 0; }
 
+/* ── MOBILE METRICS STRIP (shown only mobile) ── */
+.mobile-metrics {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--line);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.mobile-metric {
+  background: var(--bg2); padding: 1.2rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.25rem;
+}
+.mobile-metric:nth-child(odd) { background: var(--bg); }
+
 /* ── BTN ── */
 .btn {
   font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em;
   text-transform: uppercase; text-decoration: none;
-  padding: 0.7rem 1.5rem; border-radius: 2px;
+  padding: 0.75rem 1.5rem; border-radius: 2px;
   transition: all 0.22s; border: none; cursor: none;
   display: inline-block;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
 }
 .btn-accent { background: var(--accent); color: var(--bg); }
 .btn-accent:hover { background: #D4B896; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(201,168,130,0.2); }
@@ -202,16 +248,13 @@ nav {
 /* ── MAIN CONTENT ── */
 .main { max-width: 1280px; margin: 6rem auto; border-right: 1px solid var(--line); }
 
-.main + .main{
-  margin-top:6rem;
-}
 /* ── SECTION HEADER ── */
 .sec-bar {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 3rem; height: 52px;
   border-bottom: 1px solid var(--line);
   border-top: 1px solid var(--line);
-  position: sticky; top: 60px; z-index: 10;
+  position: sticky; top: 56px; z-index: 10;
   background: var(--bg);
 }
 .sec-bar-title {
@@ -244,7 +287,7 @@ nav {
 .proj-year { font-size: 0.65rem; color: var(--dim2); letter-spacing: 0.05em; margin-bottom: 0.5rem; }
 .proj-name {
   font-family: 'Cabinet Grotesk', sans-serif;
-  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  font-size: clamp(1.2rem, 2.2vw, 1.8rem);
   font-weight: 700; letter-spacing: -0.025em;
   color: var(--text); margin-bottom: 0.6rem; line-height: 1.1;
   transition: color 0.2s;
@@ -263,6 +306,7 @@ nav {
   letter-spacing: 0.1em; text-transform: uppercase;
   display: flex; align-items: center; gap: 0.4rem;
   transition: gap 0.2s;
+  padding: 0.5rem 0; /* bigger tap target */
 }
 .proj-link:hover { gap: 0.7rem; }
 .proj-link-arrow { font-size: 0.9rem; }
@@ -295,7 +339,7 @@ nav {
 .xp-row { padding: 1.75rem 0; border-bottom: 1px solid var(--line); }
 .xp-row:first-child { padding-top: 0; }
 .xp-row:last-child { border-bottom: none; }
-.xp-top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.25rem; }
+.xp-top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.25rem; flex-wrap: wrap; }
 .xp-role { font-family: 'Cabinet Grotesk', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; }
 .xp-period { font-size: 0.65rem; color: var(--dim2); letter-spacing: 0.05em; white-space: nowrap; }
 .xp-org { font-size: 0.75rem; color: var(--accent); margin-bottom: 0.7rem; font-weight: 500; }
@@ -324,7 +368,7 @@ nav {
 .contact-right { padding: 4rem 3rem; background: var(--bg2); }
 .contact-big {
   font-family: 'Cabinet Grotesk', sans-serif;
-  font-size: clamp(2.8rem, 5vw, 5rem);
+  font-size: clamp(2.4rem, 5vw, 5rem);
   font-weight: 800; letter-spacing: -0.04em; line-height: 0.95;
   margin-bottom: 1.5rem;
 }
@@ -335,14 +379,16 @@ nav {
   display: flex; justify-content: space-between; align-items: center;
   padding: 1rem 0; border-bottom: 1px solid var(--line);
   text-decoration: none; transition: all 0.2s; gap: 1rem;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 56px; /* better tap target */
 }
 .clink:first-child { border-top: 1px solid var(--line); }
 .clink-left { display: flex; flex-direction: column; gap: 0.1rem; }
 .clink-label { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim2); }
 .clink-val { font-size: 0.82rem; color: var(--dim); transition: color 0.2s; }
 .clink:hover .clink-val { color: var(--text); }
-.clink-arrow { font-size: 1rem; color: var(--accent); opacity: 0; transform: translateX(-6px); transition: all 0.2s; }
-.clink:hover .clink-arrow { opacity: 1; transform: translateX(0); }
+.clink-arrow { font-size: 1rem; color: var(--accent); opacity: 0.5; transition: all 0.2s; }
+.clink:hover .clink-arrow { opacity: 1; transform: translateX(3px); }
 
 footer {
   max-width: 1280px; margin: 0 auto;
@@ -365,29 +411,171 @@ footer {
 .hero-instant.d4 { animation-delay: 0.46s; }
 @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:none; } }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 800px) {
-  body { cursor: auto; }
-  #cursor, #cursor-ring { display: none; }
-  nav { padding: 0 1.5rem; }
-  .nav-center { display: none; }
-  .hero { grid-template-columns: 1fr; grid-template-rows: auto auto auto; }
-  .hero-left { padding: 3rem 1.5rem 2rem; border-right: none; }
-  .hero-right { grid-column: 1; padding: 2rem 1.5rem; }
-  .hero-bar { padding: 1rem 1.5rem; }
-  .main { border-right: none; }
-  .sec-bar { padding: 0 1.5rem; }
-  .proj-wrap { padding: 0 1.5rem; }
-  .proj-row { grid-template-columns: 1fr; }
-  .proj-aside { flex-direction: row; align-items: center; justify-content: space-between; margin-top: 0.75rem; }
+/* ══════════════════════════════════
+   RESPONSIVE — TABLET (≤1024px)
+══════════════════════════════════ */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-left {
+    grid-column: 1; grid-row: 1;
+    border-right: none;
+    padding: 4rem 2.5rem 2rem;
+  }
+  .hero-right {
+    grid-column: 1; grid-row: 2;
+    padding: 2.5rem 2.5rem;
+    background: var(--bg2);
+    border-top: 1px solid var(--line);
+  }
+  .hero-bar { grid-row: 3; }
+  .hero-metrics { padding-top: 2rem; margin-top: 2rem; }
   .two-col { grid-template-columns: 1fr; }
   .two-col > *:first-child { border-right: none; border-bottom: 1px solid var(--line); }
-  .two-col > * { padding: 2.5rem 1.5rem; }
   .contact-section { grid-template-columns: 1fr; }
-  .contact-left, .contact-right { padding: 2.5rem 1.5rem; }
   .contact-left { border-right: none; border-bottom: 1px solid var(--line); }
-  footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
-  .hero { border-right: none; }
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE — MOBILE (≤768px)
+══════════════════════════════════ */
+@media (max-width: 768px) {
+  body { cursor: auto; font-size: 14px; }
+  #cursor, #cursor-ring { display: none; }
+  .btn { cursor: pointer; }
+  a, button { cursor: pointer; }
+
+  /* Nav */
+  nav { padding: 0 1.25rem; height: 56px; }
+  .nav-center { display: none; }
+  .nav-mobile-menu { display: flex; }
+  .mobile-drawer { display: flex; }
+
+  /* Hero */
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    border-right: none;
+    padding-top: 56px;
+  }
+  .hero-left {
+    grid-column: 1; grid-row: 1;
+    padding: 2.5rem 1.25rem 2rem;
+    border-right: none;
+  }
+  .hero-right {
+    display: none; /* hide right panel on mobile — content shown below */
+  }
+  .hero-bar {
+    grid-column: 1; grid-row: 2;
+    padding: 1rem 1.25rem;
+    gap: 1rem;
+    border-right: none;
+  }
+  .hero-bar-item { font-size: 0.62rem; }
+
+  .hero-kicker { margin-bottom: 1.5rem; font-size: 0.6rem; }
+  .hero-name { font-size: clamp(2.4rem, 10vw, 3.5rem); }
+  .hero-tagline { font-size: 1.05rem; margin-bottom: 1.5rem; }
+  .hero-intro { font-size: 0.88rem; margin-top: 1.2rem; }
+  .hero-ctas { gap: 0.6rem; }
+  .btn { padding: 0.7rem 1.25rem; font-size: 0.68rem; }
+  .hero-bottom { margin-top: 2rem; }
+
+  /* Mobile metrics strip */
+  .mobile-metrics { display: grid; }
+
+  /* About section on mobile */
+  .mobile-about {
+    padding: 2rem 1.25rem;
+    background: var(--bg2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .mobile-about-label {
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--dim2); margin-bottom: 1rem;
+  }
+  .mobile-about p { font-size: 0.85rem; color: var(--dim); line-height: 1.85; }
+  .mobile-about p + p { margin-top: 0.75rem; }
+  .mobile-about strong { color: var(--text); font-weight: 500; }
+
+  /* Section bars */
+  .sec-bar { padding: 0 1.25rem; top: 56px; }
+
+  /* Main wrapper */
+  .main { border-right: none; margin: 4rem auto; }
+
+  /* Projects */
+  .proj-wrap { padding: 0 1.25rem; }
+  .proj-row {
+    grid-template-columns: 1fr;
+    padding: 2rem 0;
+    transition: none; /* no hover slide on mobile */
+  }
+  .proj-row:hover { padding-left: 0; }
+  .proj-row::before { display: none; }
+  .proj-aside {
+    flex-direction: row; align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  .proj-link { padding: 0.5rem 0; }
+  .proj-name { font-size: 1.3rem; }
+
+  /* Two-col sections */
+  .two-col { grid-template-columns: 1fr; }
+  .two-col > * { padding: 2rem 1.25rem; }
+  .two-col > *:first-child { border-right: none; border-bottom: 1px solid var(--line); }
+
+  /* Inline sec-bar within two-col */
+  .two-col .sec-bar {
+    margin: -2rem -1.25rem 2rem;
+    position: static;
+    border-top: none;
+  }
+
+  /* Skills */
+  .pill { font-size: 0.7rem; padding: 0.3rem 0.7rem; }
+
+  /* Experience */
+  .xp-top { flex-direction: column; gap: 0.15rem; }
+  .xp-role { font-size: 0.95rem; }
+
+  /* Education */
+  .edu-row { padding: 1.2rem 0; }
+  .edu-school { font-size: 0.82rem; }
+  .edu-grade { font-size: 1rem; }
+
+  /* Certs */
+  .certs { grid-template-columns: 1fr; }
+
+  /* Contact */
+  .contact-section { grid-template-columns: 1fr; }
+  .contact-left {
+    padding: 2.5rem 1.25rem;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .contact-right { padding: 2.5rem 1.25rem; }
+  .contact-big { font-size: clamp(2rem, 9vw, 3rem); }
+
+  /* Footer */
+  footer {
+    border-right: none;
+    padding: 1.5rem 1.25rem;
+    flex-direction: column; gap: 0.5rem; text-align: center;
+  }
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE — SMALL (≤400px)
+══════════════════════════════════ */
+@media (max-width: 400px) {
+  .hero-name { font-size: clamp(2.1rem, 11vw, 2.8rem); }
+  .hero-ctas { flex-direction: column; }
+  .btn { text-align: center; }
+  .mobile-metrics { grid-template-columns: 1fr 1fr; }
+  .hero-bar-item:nth-child(n+4) { display: none; } /* show fewer bar items */
 }
 </style>
 </head>
@@ -396,6 +584,14 @@ footer {
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
+<!-- Mobile nav drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="#work" onclick="closeDrawer()">Work</a>
+  <a href="#skills" onclick="closeDrawer()">Skills</a>
+  <a href="#experience" onclick="closeDrawer()">Experience</a>
+  <a href="#contact" onclick="closeDrawer()">Contact</a>
+</div>
+
 <nav>
   <div class="nav-center">
     <a href="#work">Work</a>
@@ -403,7 +599,15 @@ footer {
     <a href="#experience">Experience</a>
     <a href="#contact">Contact</a>
   </div>
-  <div class="nav-otw">Open to Work</div>
+  <div class="nav-otw">
+    <div class="nav-otw-dot"></div>
+    Open to Work
+  </div>
+  <div class="nav-mobile-menu" id="menuBtn" onclick="toggleDrawer()" aria-label="Menu">
+    <span id="bar1"></span>
+    <span id="bar2"></span>
+    <span id="bar3"></span>
+  </div>
 </nav>
 
 <!-- ── HERO ── -->
@@ -413,11 +617,11 @@ footer {
       <div class="hero-kicker hero-instant"><span class="kicker-line"></span>Computer Science Engineer · VIT Vellore · 2026</div>
       <h1 class="hero-name hero-instant d1">
         Preeti Ambwani
-        <span class="line-dim">Software Engineer . ML Systems . Data Analyst</span>
+        <span class="line-dim">Software Engineer · ML Systems · Data Analyst</span>
       </h1>
-      <p class="hero-intro hero-instant d2>
+      <p class="hero-intro hero-instant d2">
         Building scalable backend systems, secure APIs, and machine learning solutions that solve real-world problems.
-        </p>
+      </p>
     </div>
     <div class="hero-bottom hero-instant d2">
       <p class="hero-tagline">Building systems that scale,<br>secured by design.</p>
@@ -428,6 +632,15 @@ footer {
     </div>
   </div>
 
+  <!-- Mobile: About strip (shown only on mobile) -->
+  <div class="mobile-about hero-instant d3">
+    <p class="mobile-about-label">About</p>
+    <p>I'm a <strong>CSE undergraduate at VIT Vellore</strong>, graduating in 2026. I build production-ready backend systems, REST APIs, and ML-powered applications.</p>
+    <p>I care about code that holds up under pressure — clean architecture, measurable outcomes, and systems that actually ship.</p>
+    <p>Outside engineering, I lead as a <strong>Senior Core member at SPARTANS, VIT</strong> — because building things that work isn't just about code.</p>
+  </div>
+
+  <!-- Desktop: right panel -->
   <div class="hero-right hero-instant d3">
     <div>
       <p class="hero-right-label">About</p>
@@ -453,6 +666,26 @@ footer {
   </div>
 </div>
 
+<!-- Mobile metrics strip (shown only on mobile) -->
+<div class="mobile-metrics hero-instant d4">
+  <div class="mobile-metric">
+    <span class="metric-label">Records Processed</span>
+    <span class="metric-val">50K+</span>
+  </div>
+  <div class="mobile-metric">
+    <span class="metric-label">Model Accuracy</span>
+    <span class="metric-val">85%</span>
+  </div>
+  <div class="mobile-metric">
+    <span class="metric-label">SQL Mitigation</span>
+    <span class="metric-val">100%</span>
+  </div>
+  <div class="mobile-metric">
+    <span class="metric-label">API Latency</span>
+    <span class="metric-val">&lt;100ms</span>
+  </div>
+</div>
+
 <!-- ── PROJECTS ── -->
 <div class="main" id="work">
   <div class="sec-bar">
@@ -468,7 +701,7 @@ footer {
         <div class="proj-tags"><span class="proj-tag">Flask</span><span class="proj-tag">REST API</span><span class="proj-tag">Machine Learning</span><span class="proj-tag">Render</span><span class="proj-tag">Netlify</span><span class="proj-tag">Data Analysis</span></div>
       </div>
       <div class="proj-aside">
-        <a href="https://wage-watch-india.netlify.app/" class="proj-link">View <span class="proj-link-arrow">↗</span></a>
+        <a href="https://wage-watch-india.netlify.app/" class="proj-link" target="_blank">View <span class="proj-link-arrow">↗</span></a>
         <div class="proj-type">ML · Backend<br>Compliance</div>
       </div>
     </div>
@@ -481,7 +714,7 @@ footer {
         <div class="proj-tags"><span class="proj-tag">Time-Series</span><span class="proj-tag">Python</span><span class="proj-tag">Automation</span><span class="proj-tag">Backend</span></div>
       </div>
       <div class="proj-aside">
-        <a href="https://railway-ras.vercel.app/" class="proj-link">View <span class="proj-link-arrow">↗</span></a>
+        <a href="https://railway-ras.vercel.app/" class="proj-link" target="_blank">View <span class="proj-link-arrow">↗</span></a>
         <div class="proj-type">Prediction<br>Automation</div>
       </div>
     </div>
@@ -494,7 +727,7 @@ footer {
         <div class="proj-tags"><span class="proj-tag">Security</span><span class="proj-tag">OWASP</span><span class="proj-tag">Full-Stack</span><span class="proj-tag">SQL</span></div>
       </div>
       <div class="proj-aside">
-        <a href="https://github.com/kiyoshi-code/sql-injection-prevention-project" class="proj-link">View <span class="proj-link-arrow">↗</span></a>
+        <a href="https://github.com/kiyoshi-code/sql-injection-prevention-project" class="proj-link" target="_blank">View <span class="proj-link-arrow">↗</span></a>
         <div class="proj-type">Security<br>Full-Stack</div>
       </div>
     </div>
@@ -507,7 +740,7 @@ footer {
         <div class="proj-tags"><span class="proj-tag">Scikit-learn</span><span class="proj-tag">Flask</span><span class="proj-tag">Ensemble</span><span class="proj-tag">Model Deployment</span></div>
       </div>
       <div class="proj-aside">
-        <a href="https://github.com/kiyoshi-code/Stress-Detection-Project" class="proj-link">View <span class="proj-link-arrow">↗</span></a>
+        <a href="https://github.com/kiyoshi-code/Stress-Detection-Project" class="proj-link" target="_blank">View <span class="proj-link-arrow">↗</span></a>
         <div class="proj-type">ML · NLP<br>Deployment</div>
       </div>
     </div>
@@ -592,7 +825,6 @@ footer {
     <div class="contact-right r r1">
       <div class="contact-links">
         <a href="mailto:ambwanipreeti@gmail.com" class="clink"><div class="clink-left"><span class="clink-label">Email</span><span class="clink-val">ambwanipreeti@gmail.com</span></div><span class="clink-arrow">↗</span></a>
-        <a href="tel:+919324315262" class="clink"><div class="clink-left"><span class="clink-label">Phone</span><span class="clink-val">+91 93243 15262</span></div><span class="clink-arrow">↗</span></a>
         <a href="https://linkedin.com" target="_blank" class="clink"><div class="clink-left"><span class="clink-label">LinkedIn</span><span class="clink-val">linkedin.com/in/preeti</span></div><span class="clink-arrow">↗</span></a>
         <a href="https://github.com" target="_blank" class="clink"><div class="clink-left"><span class="clink-label">GitHub</span><span class="clink-val">github.com/preeti</span></div><span class="clink-arrow">↗</span></a>
       </div>
@@ -602,11 +834,10 @@ footer {
 
 <footer>
   <span>© 2026 Preeti Ambwani</span>
-  
 </footer>
 
 <script>
-// Cursor
+// ── CURSOR (desktop) ──
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
 let mx = 0, my = 0, rx = 0, ry = 0;
@@ -619,7 +850,6 @@ function animCursor() {
 }
 animCursor();
 
-// Cursor scale on links
 document.querySelectorAll('a, button').forEach(el => {
   el.addEventListener('mouseenter', () => {
     cursor.style.transform = 'translate(-50%,-50%) scale(2.2)';
@@ -633,13 +863,60 @@ document.querySelectorAll('a, button').forEach(el => {
   });
 });
 
-// Scroll reveal
+// ── MOBILE DRAWER ──
+function toggleDrawer() {
+  const d = document.getElementById('mobileDrawer');
+  const b1 = document.getElementById('bar1');
+  const b2 = document.getElementById('bar2');
+  const b3 = document.getElementById('bar3');
+  const open = d.classList.toggle('open');
+  if (open) {
+    b1.style.cssText = 'transform:translateY(5.5px) rotate(45deg)';
+    b2.style.cssText = 'opacity:0';
+    b3.style.cssText = 'transform:translateY(-5.5px) rotate(-45deg)';
+  } else {
+    b1.style.cssText = b2.style.cssText = b3.style.cssText = '';
+  }
+}
+function closeDrawer() {
+  const d = document.getElementById('mobileDrawer');
+  d.classList.remove('open');
+  document.getElementById('bar1').style.cssText = '';
+  document.getElementById('bar2').style.cssText = '';
+  document.getElementById('bar3').style.cssText = '';
+}
+
+// Close drawer on outside tap
+document.addEventListener('click', e => {
+  const d = document.getElementById('mobileDrawer');
+  const btn = document.getElementById('menuBtn');
+  if (d.classList.contains('open') && !d.contains(e.target) && !btn.contains(e.target)) {
+    closeDrawer();
+  }
+});
+
+// ── INLINE SEC-BAR FIX for mobile ──
+// On mobile, the inline sec-bars in two-col have negative margins — fix them
+function fixInlineSecBars() {
+  const isMobile = window.innerWidth <= 768;
+  document.querySelectorAll('.two-col .sec-bar').forEach(el => {
+    if (isMobile) {
+      el.style.margin = '-2rem -1.25rem 2rem';
+    } else {
+      el.style.margin = '-3rem -3rem 2.5rem';
+    }
+  });
+}
+fixInlineSecBars();
+window.addEventListener('resize', fixInlineSecBars);
+
+// ── SCROLL REVEAL ──
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
 }, { threshold: 0.07 });
 document.querySelectorAll('.r').forEach(el => io.observe(el));
 
-// Nav border
+// ── NAV BORDER ──
 window.addEventListener('scroll', () => {
   document.querySelector('nav').style.borderBottomColor =
     window.scrollY > 20 ? 'rgba(237,232,224,0.13)' : 'rgba(237,232,224,0.09)';
