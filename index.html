@@ -34,6 +34,7 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   cursor: none;
+  padding-bottom: 80px;
 }
 
 #bg-canvas {
@@ -45,10 +46,10 @@ body {
   background: 
     radial-gradient(circle at 15% 20%, rgba(45,90,61,0.18), transparent 40%),
     radial-gradient(circle at 85% 80%, rgba(191,107,42,0.10), transparent 40%),
-    linera-gradient(rgba(45,90,61,0.06) 1px, transparent 1px),
+    linear-gradient(rgba(45,90,61,0.06) 1px, transparent 1px),
     linear-gradient(90deg, rgba(45,90,61,0.06) 1px, transparent 1px);
   
-  background-siz:
+  background-size:
     100% 100%,
     100% 100%,
     42px 42px,
@@ -131,11 +132,21 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
 
 /* ── HERO ── */
 .hero {
-  position: relative; z-index: 1;
-  min-height: 100vh; padding-top: 58px;
-  display: grid; grid-template-columns: 1fr 310px; grid-template-rows: 1fr auto;
-  max-width: 1240px; margin: 0 auto;
-  border-left: 1px solid var(--linemd); border-right: 1px solid var(--linemd);
+  position: relative; 
+  z-index: 1;
+  
+  min-height: 100vh; 
+  padding-top: 58px;
+  
+  display: grid;
+  grid-template-columns: 1fr 310px;
+  grid-template-rows: 1fr auto;
+  
+  max-width: 1240px;
+  margin: 0 auto 80px auto;
+  
+  border-left: 1px solid var(--linemd);
+  border-right: 1px solid var(--linemd);
 }
 .hero-left {
   padding: 5.5rem 3.5rem 3rem;
@@ -243,12 +254,13 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
 /* ── MAIN ── */
 .main {
   position: relative; z-index: 1;
-  max-width: 1240px; margin: 60px auto;
+  max-width: 1240px; margin: 80px auto;
   box-shadow: 0 10px 35px rgba(0,0,0,0.04);
   border: 1px solid var(--linemd);
   background: rgba(253,252,249,0.92);
   backdrop-filter: blur(3px);
   border-radius: 6px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.05);
 }
 .main::before{
 content:'';
