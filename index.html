@@ -34,7 +34,6 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   cursor: none;
-  padding-bottom: 80px;
 }
 
 #bg-canvas {
@@ -55,7 +54,6 @@ body {
     42px 42px,
     42px 42px;
 }
-
 /* concentric rings — top-left corner */
 #bg-ring1, #bg-ring2 {
   position: fixed; z-index: 0; pointer-events: none;
@@ -134,6 +132,7 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
 .hero {
   position: relative; 
   z-index: 1;
+  overflow:hidden;
   
   min-height: 100vh; 
   padding-top: 58px;
@@ -148,6 +147,7 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
   border-left: 1px solid var(--linemd);
   border-right: 1px solid var(--linemd);
 }
+
 .hero-left {
   padding: 5.5rem 3.5rem 3rem;
   border-right: 1px solid var(--linemd);
@@ -180,7 +180,7 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
 
 .hero-name {
   font-family: 'Instrument Serif', serif;
-  font-size: clamp(2.8rem, 4.8vw, 5rem);
+  font-size: clamp(3.2rem, 5vw, 5.5rem);
   font-weight: 400; line-height: 0.93; letter-spacing: -0.02em;
   color: var(--text); margin-bottom: auto; white-space: nowrap;
 }
@@ -207,6 +207,12 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
   font-family: 'Syne', sans-serif;
   font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em;
   text-transform: uppercase; color: var(--green); margin-bottom: 1.25rem;
+}
+
+
+.hero-left,.hero-right{
+position:relative;
+z-index:2;
 }
 .about-blurb { font-size: 0.84rem; color: var(--dim); line-height: 1.9; }
 .about-blurb p + p { margin-top: 0.85rem; }
@@ -255,29 +261,17 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
 .main {
   position: relative; z-index: 1;
   max-width: 1240px; margin: 80px auto;
-  box-shadow: 0 10px 35px rgba(0,0,0,0.04);
   border: 1px solid var(--linemd);
-  background: rgba(253,252,249,0.92);
-  backdrop-filter: blur(3px);
+  background: #FCFBF8;
   border-radius: 6px;
   box-shadow:0 12px 30px rgba(0,0,0,0.05);
-}
-.main::before{
-content:'';
-position:absolute;
-top:-24px;
-left:50%;
-transform:translateX(-50%);
-width:80%;
-height:1px;
-background:rgba(45,90,61,0.15);
 }
 
 /* ── SEC BAR ── */
 .sec-bar, .col-header {
   display: flex; align-items: center;
   padding: 0 3.5rem; height: 50px;
-  background: rgba(45, 90, 61, 0.06);
+  background: #EBF2ED;
   border-bottom: 1px solid var(--line);
 }
 .sec-bar { position: sticky; top: 58px; z-index: 10; }
@@ -435,7 +429,11 @@ footer {
   display: flex; justify-content: space-between; align-items: center;
   font-family: 'Syne', sans-serif;
   font-size: 0.65rem; color: rgba(255,255,255,0.35); 
+  margin-bottom:0;
 }
+html, body{
+  height:100%;
+} 
 
 /* ── REVEAL ── */
 .r { opacity: 0; transform: translateY(18px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
@@ -745,6 +743,7 @@ new IntersectionObserver(entries=>{
 window.addEventListener('scroll',()=>{
   navEl.style.borderBottomColor = window.scrollY>20 ? 'rgba(22,18,14,0.15)' : 'rgba(22,18,14,0.08)';
 });
+
 </script>
 </body>
 </html>
