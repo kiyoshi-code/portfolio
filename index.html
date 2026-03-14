@@ -11,7 +11,7 @@
 :root {
   --bg:      #F4F1EC;
   --bg2:     #EAE5DC;
-  --surface: rgba(253,252,249,0.88);
+  --surface: rgba(253,252,249,0.82);
   --text:    #16120E;
   --dim:     #524E47;
   --dim2:    #9C9790;
@@ -19,7 +19,6 @@
   --green2:  #4E9268;
   --green3:  #EBF2ED;
   --amber:   #BF6B2A;
-  --accl:    rgba(45,90,61,0.07);
   --line:    rgba(22,18,14,0.1);
   --linemd:  rgba(22,18,14,0.18);
   --dark:    #1E2E22;
@@ -36,47 +35,11 @@ body {
   cursor: none;
 }
 
-#bg-canvas {
+/* ══════════════════════════════════════
+   BACKGROUND DESIGN — drawn with JS canvas
+   ══════════════════════════════════════ */
+#bg-layer {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-color: var(--bg);
-  background-image:
-    /* colour blobs */
-    radial-gradient(ellipse 55% 45% at 0% 0%,   rgba(45,90,61,0.12) 0%, transparent 70%),
-    radial-gradient(ellipse 45% 40% at 100% 100%, rgba(78,146,104,0.10) 0%, transparent 70%),
-    radial-gradient(ellipse 30% 25% at 100% 0%,  rgba(191,107,42,0.06) 0%, transparent 70%),
-    radial-gradient(ellipse 30% 25% at 0% 100%,  rgba(45,90,61,0.07) 0%, transparent 70%),
-    /* dot grid */
-    radial-gradient(circle, rgba(45,90,61,0.18) 1px, transparent 1px);
-  background-size:
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    36px 36px;
-}
-
-/* concentric rings — top-left corner */
-#bg-ring1, #bg-ring2 {
-  position: fixed; z-index: 0; pointer-events: none;
-  border-radius: 50%; border: 1px solid rgba(45,90,61,0.09);
-}
-#bg-ring1 {
-  width: 600px; height: 600px;
-  top: -260px; left: -260px;
-  box-shadow:
-    0 0 0 80px  rgba(45,90,61,0.05),
-    0 0 0 160px rgba(45,90,61,0.04),
-    0 0 0 240px rgba(45,90,61,0.03),
-    0 0 0 320px rgba(45,90,61,0.02);
-}
-#bg-ring2 {
-  width: 500px; height: 500px;
-  bottom: -220px; right: -220px;
-  border-color: rgba(78,146,104,0.08);
-  box-shadow:
-    0 0 0 70px  rgba(78,146,104,0.04),
-    0 0 0 140px rgba(78,146,104,0.03),
-    0 0 0 210px rgba(78,146,104,0.02);
 }
 
 /* ── CURSOR ── */
@@ -84,8 +47,7 @@ body {
   position: fixed; width: 7px; height: 7px;
   background: var(--green); border-radius: 50%;
   pointer-events: none; z-index: 9999;
-  transform: translate(-50%,-50%);
-  transition: transform 0.08s;
+  transform: translate(-50%,-50%); transition: transform 0.08s;
 }
 #cursor-ring {
   position: fixed; width: 30px; height: 30px;
@@ -100,7 +62,7 @@ nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   height: 58px; padding: 0 2.5rem;
   display: flex; align-items: center; justify-content: space-between;
-  background: rgba(244,241,236,0.96);
+  background: rgba(244,241,236,0.95);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--line);
 }
@@ -141,22 +103,15 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
   padding: 5.5rem 3.5rem 3rem;
   border-right: 1px solid var(--linemd);
   display: flex; flex-direction: column; justify-content: space-between;
-  background: rgba(253,252,249,0.88);
-  backdrop-filter: blur(2px);
-  position: relative; overflow: hidden;
-}
-.hero-left::after {
-  content: '';
-  position: absolute; bottom: -60px; right: -60px;
-  width: 300px; height: 300px; border-radius: 50%;
-  border: 1px solid rgba(45,90,61,0.1);
-  box-shadow: 0 0 0 40px rgba(45,90,61,0.04), 0 0 0 80px rgba(45,90,61,0.03);
-  pointer-events: none;
+  background: var(--surface);
+  backdrop-filter: blur(4px);
+  position: relative;
 }
 .hero-right {
   padding: 5.5rem 2.5rem 3rem;
   display: flex; flex-direction: column; justify-content: space-between;
-  background: var(--green3);
+  background: rgba(235,242,237,0.85);
+  backdrop-filter: blur(4px);
 }
 
 .hero-kicker {
@@ -245,8 +200,8 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
   position: relative; z-index: 1;
   max-width: 1240px; margin: 3px auto 0;
   border: 1px solid var(--linemd);
-  background: rgba(253,252,249,0.88);
-  backdrop-filter: blur(2px);
+  background: var(--surface);
+  backdrop-filter: blur(4px);
 }
 
 /* ── SEC BAR ── */
@@ -264,11 +219,11 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
   text-transform: uppercase; color: rgba(255,255,255,0.88);
 }
 
-/* ── TWO-COL ── */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; }
-.two-col > div { display: flex; flex-direction: column; }
-.two-col > div:first-child { border-right: 1px solid var(--linemd); }
-.col-body { padding: 2.5rem 3.5rem; flex: 1; }
+/* ── STACKED SECTIONS ── */
+.two-col { display: block; }
+.two-col > div { display: flex; flex-direction: column; border-top: 1px solid var(--linemd); }
+.two-col > div:first-child { border-top: none; }
+.col-body { padding: 2.5rem 3.5rem; }
 
 /* ── PROJECTS ── */
 .proj-row {
@@ -286,7 +241,7 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
   transition: transform 0.3s cubic-bezier(.22,1,.36,1);
 }
 .proj-row:hover::before { transform: scaleY(1); }
-.proj-row:hover { padding-left: 4.5rem; background: rgba(45,90,61,0.02); }
+.proj-row:hover { padding-left: 4.5rem; background: rgba(45,90,61,0.03); }
 
 .proj-year {
   font-family: 'Syne', sans-serif;
@@ -331,7 +286,6 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
   font-size: 0.73rem; color: var(--dim);
   border: 1px solid var(--line); padding: 0.28rem 0.8rem;
   border-radius: 2px; transition: all 0.18s; cursor: default;
-  background: var(--surface);
 }
 .pill:hover { color: var(--green); border-color: var(--green2); background: var(--green3); }
 
@@ -371,7 +325,7 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
 .certs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
 .cert {
   border: 1px solid var(--line); padding: 1rem 1.15rem; border-radius: 2px;
-  background: var(--bg); transition: border-color 0.2s, background 0.2s;
+  background: var(--bg2); transition: border-color 0.2s, background 0.2s;
 }
 .cert:hover { border-color: var(--green2); background: var(--green3); }
 .cert-n { font-size: 0.8rem; font-weight: 500; margin-bottom: 0.2rem; line-height: 1.4; }
@@ -380,7 +334,7 @@ nav.name-visible .nav-logo { opacity: 1; transform: translateY(0); pointer-event
 /* ── CONTACT ── */
 .contact-section { display: grid; grid-template-columns: 1fr 1fr; }
 .contact-left { padding: 4rem 3.5rem; border-right: 1px solid var(--linemd); }
-.contact-right { padding: 4rem 3.5rem; background: var(--green3); }
+.contact-right { padding: 4rem 3.5rem; background: rgba(235,242,237,0.85); backdrop-filter: blur(4px); }
 .contact-big {
   font-family: 'Syne', sans-serif;
   font-size: clamp(2.5rem, 4.5vw, 4.5rem);
@@ -428,8 +382,7 @@ footer {
   nav { padding: 0 1.5rem; }
   .nav-links { display: none; }
   .hero { grid-template-columns: 1fr; border-left: none; border-right: none; }
-  .hero-left { padding: 3rem 1.5rem 2rem; border-right: none; overflow: visible; }
-  .hero-left::after { display: none; }
+  .hero-left { padding: 3rem 1.5rem 2rem; border-right: none; }
   .hero-right { padding: 2.5rem 1.5rem; }
   .hero-bar { padding: 1rem 1.5rem; }
   .hero-name { white-space: normal; font-size: clamp(2.4rem, 8vw, 3.5rem); }
@@ -438,8 +391,7 @@ footer {
   .proj-row { padding: 2rem 1.5rem; grid-template-columns: 1fr; }
   .proj-row:hover { padding-left: 1.5rem; }
   .proj-aside { flex-direction: row; align-items: center; justify-content: space-between; margin-top: 0.75rem; }
-  .two-col { grid-template-columns: 1fr; }
-  .two-col > div:first-child { border-right: none; border-bottom: 1px solid var(--linemd); }
+  .two-col > div:first-child { border-top: none; }
   .col-header { padding: 0 1.5rem; }
   .col-body { padding: 2rem 1.5rem; }
   .contact-section { grid-template-columns: 1fr; }
@@ -452,9 +404,9 @@ footer {
 </head>
 <body>
 
-<div id="bg-canvas"></div>
-<div id="bg-ring1"></div>
-<div id="bg-ring2"></div>
+<!-- BACKGROUND CANVAS -->
+<canvas id="bg-layer" style="position:fixed;inset:0;z-index:0;pointer-events:none;width:100%;height:100%"></canvas>
+
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
@@ -573,22 +525,10 @@ footer {
     <div class="col-header"><span>Skills</span></div>
     <div class="col-body">
       <div class="skills-inner r">
-        <div>
-          <p class="sg-title">Languages</p>
-          <div class="pills"><span class="pill">Python</span><span class="pill">Java</span><span class="pill">C / C++</span><span class="pill">JavaScript</span><span class="pill">HTML / CSS</span></div>
-        </div>
-        <div>
-          <p class="sg-title">Libraries &amp; Frameworks</p>
-          <div class="pills"><span class="pill">Flask</span><span class="pill">Pandas</span><span class="pill">NumPy</span><span class="pill">Scikit-learn</span><span class="pill">TensorFlow</span></div>
-        </div>
-        <div>
-          <p class="sg-title">Tools &amp; Platforms</p>
-          <div class="pills"><span class="pill">Git / GitHub</span><span class="pill">MySQL</span><span class="pill">AWS Cloud</span><span class="pill">Power BI</span><span class="pill">Figma</span><span class="pill">Jupyter</span></div>
-        </div>
-        <div>
-          <p class="sg-title">Core Competencies</p>
-          <div class="pills"><span class="pill">DSA</span><span class="pill">OOP</span><span class="pill">RESTful APIs</span><span class="pill">DBMS</span><span class="pill">Deep Learning</span><span class="pill">UI/UX Design</span></div>
-        </div>
+        <div><p class="sg-title">Languages</p><div class="pills"><span class="pill">Python</span><span class="pill">Java</span><span class="pill">C / C++</span><span class="pill">JavaScript</span><span class="pill">HTML / CSS</span></div></div>
+        <div><p class="sg-title">Libraries &amp; Frameworks</p><div class="pills"><span class="pill">Flask</span><span class="pill">Pandas</span><span class="pill">NumPy</span><span class="pill">Scikit-learn</span><span class="pill">TensorFlow</span></div></div>
+        <div><p class="sg-title">Tools &amp; Platforms</p><div class="pills"><span class="pill">Git / GitHub</span><span class="pill">MySQL</span><span class="pill">AWS Cloud</span><span class="pill">Power BI</span><span class="pill">Figma</span><span class="pill">Jupyter</span></div></div>
+        <div><p class="sg-title">Core Competencies</p><div class="pills"><span class="pill">DSA</span><span class="pill">OOP</span><span class="pill">RESTful APIs</span><span class="pill">DBMS</span><span class="pill">Deep Learning</span><span class="pill">UI/UX Design</span></div></div>
       </div>
     </div>
   </div>
@@ -624,18 +564,9 @@ footer {
     <div class="col-header"><span>Education</span></div>
     <div class="col-body">
       <div class="r">
-        <div class="edu-row">
-          <div><p class="edu-school">Vellore Institute of Technology</p><p class="edu-info">B.Tech CSE · Graduation 2026 · Vellore, Tamil Nadu</p></div>
-          <span class="edu-grade">8.24</span>
-        </div>
-        <div class="edu-row">
-          <div><p class="edu-school">Smt. Savitridevi Thirani Junior College</p><p class="edu-info">Maharashtra State Board · 2020–2022 · Thane, Mumbai</p></div>
-          <span class="edu-grade">76.5%</span>
-        </div>
-        <div class="edu-row">
-          <div><p class="edu-school">Dayanand Anglo Vedic Public School</p><p class="edu-info">CBSE · 2010–2020 · Airoli, Navi Mumbai</p></div>
-          <span class="edu-grade">95%</span>
-        </div>
+        <div class="edu-row"><div><p class="edu-school">Vellore Institute of Technology</p><p class="edu-info">B.Tech CSE · Graduation 2026 · Vellore, Tamil Nadu</p></div><span class="edu-grade">8.24</span></div>
+        <div class="edu-row"><div><p class="edu-school">Smt. Savitridevi Thirani Junior College</p><p class="edu-info">Maharashtra State Board · 2020–2022 · Thane, Mumbai</p></div><span class="edu-grade">76.5%</span></div>
+        <div class="edu-row"><div><p class="edu-school">Dayanand Anglo Vedic Public School</p><p class="edu-info">CBSE · 2010–2020 · Airoli, Navi Mumbai</p></div><span class="edu-grade">95%</span></div>
       </div>
     </div>
   </div>
@@ -686,6 +617,121 @@ footer {
 </footer>
 
 <script>
+/* ══ BACKGROUND CANVAS ══ */
+(function() {
+  const canvas = document.getElementById('bg-layer');
+  const ctx = canvas.getContext('2d');
+  const green = '#2D5A3D';
+  const green2 = '#4E9268';
+  const amber = '#BF6B2A';
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    draw();
+  }
+
+  function draw() {
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    // ── background fill
+    ctx.fillStyle = '#F4F1EC';
+    ctx.fillRect(0, 0, W, H);
+
+    // ── dot grid
+    ctx.fillStyle = 'rgba(45,90,61,0.18)';
+    const spacing = 36;
+    for (let x = spacing/2; x < W; x += spacing) {
+      for (let y = spacing/2; y < H; y += spacing) {
+        ctx.beginPath();
+        ctx.arc(x, y, 1.2, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // ── helper: draw concentric rings from a point
+    function rings(cx, cy, startR, count, step, strokeColor, alpha) {
+      for (let i = 0; i < count; i++) {
+        const r = startR + i * step;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI*2);
+        ctx.strokeStyle = strokeColor;
+        ctx.globalAlpha = alpha * (1 - i * 0.12);
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    // ── crosshair helper
+    function crosshair(cx, cy, size, color, alpha) {
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cx - size, cy); ctx.lineTo(cx + size, cy);
+      ctx.moveTo(cx, cy - size); ctx.lineTo(cx, cy + size);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, 3, 0, Math.PI*2);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    // ── RING CLUSTER 1 — top-left (like your screenshot)
+    rings(-60, -60, 160, 7, 90, green, 0.22);
+
+    // ── RING CLUSTER 2 — bottom-right
+    rings(W + 60, H + 60, 160, 6, 85, green2, 0.18);
+
+    // ── RING CLUSTER 3 — top-right corner, smaller
+    rings(W + 40, 80, 120, 5, 70, green2, 0.14);
+
+    // ── RING CLUSTER 4 — mid-left, very subtle
+    rings(-40, H * 0.55, 100, 4, 65, green, 0.12);
+
+    // ── diagonal lines
+    ctx.globalAlpha = 0.06;
+    ctx.strokeStyle = green;
+    ctx.lineWidth = 1;
+    // top-right to mid
+    ctx.beginPath(); ctx.moveTo(W * 0.65, 0); ctx.lineTo(W, H * 0.52); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W * 0.68, 0); ctx.lineTo(W, H * 0.48); ctx.stroke();
+    // bottom-left
+    ctx.beginPath(); ctx.moveTo(0, H * 0.62); ctx.lineTo(W * 0.35, H); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, H * 0.66); ctx.lineTo(W * 0.32, H); ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    // ── crosshairs scattered around
+    crosshair(W * 0.78, H * 0.22, 8, green, 0.22);
+    crosshair(W * 0.18, H * 0.72, 8, green, 0.20);
+    crosshair(W * 0.88, H * 0.65, 6, green2, 0.18);
+    crosshair(W * 0.32, H * 0.38, 6, green, 0.16);
+    crosshair(W * 0.55, H * 0.82, 5, amber, 0.14);
+
+    // ── soft colour wash blobs (on top of everything, soft)
+    function blob(cx, cy, rx, ry, color, alpha) {
+      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(rx,ry));
+      grad.addColorStop(0, color.replace(')', `,${alpha})`).replace('rgb', 'rgba'));
+      grad.addColorStop(1, color.replace(')', ',0)').replace('rgb', 'rgba'));
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI*2);
+      ctx.fill();
+    }
+    blob(0,       0,       W*0.35, H*0.32, 'rgb(45,90,61)',   0.09);
+    blob(W,       H,       W*0.32, H*0.28, 'rgb(78,146,104)', 0.08);
+    blob(W,       0,       W*0.2,  H*0.2,  'rgb(191,107,42)', 0.05);
+    blob(W*0.5,   H*0.5,   W*0.18, H*0.15, 'rgb(45,90,61)',   0.04);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+})();
+
+/* ══ CURSOR ══ */
 const cur = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
@@ -708,10 +754,14 @@ document.querySelectorAll('a,button').forEach(el=>{
     ring.style.borderColor='rgba(45,90,61,0.35)';
   });
 });
+
+/* ══ SCROLL REVEAL ══ */
 const io = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
 },{threshold:0.07});
 document.querySelectorAll('.r').forEach(el=>io.observe(el));
+
+/* ══ NAV NAME REVEAL ══ */
 const heroName = document.querySelector('.hero-name');
 const navEl = document.querySelector('nav');
 new IntersectionObserver(entries=>{
